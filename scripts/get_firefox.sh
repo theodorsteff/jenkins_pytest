@@ -10,6 +10,7 @@ TMPDIR="$(mktemp -d)"
 ARCHIVE="$TMPDIR/firefox.tar.xz"
 ARCH=""
 KEEP=0
+FORCE=0
 
 usage() {
   cat <<EOF
