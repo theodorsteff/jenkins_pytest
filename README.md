@@ -74,14 +74,16 @@ xvfb-run -s "-screen 0 1920x1080x24" pytest -q
 Project Structure
 ```
 pytest_demo/
-├── JenkinsDockerfile       # Jenkins docker image builder
-├── README.md               # This file
-├── conftest.py             # Pytest configuration and fixtures
-├── requirements.txt        # Python dependencies
-├── scripts/             # Helper scripts
-│   ├── get_firefox.sh  # Download and manage Firefox
-└── tests/              # Test files
-    └── test_google.py # Example test
+├── Dockerfile                    # Docker container builder file for test execution
+├── DockerfileJenkinsContainer    # Jenkins docker image builder
+├── Jenkinsfile.docker            # Jenkins pipeline file
+├── README.md                     # This file
+├── conftest.py                   # Pytest configuration and fixtures
+├── requirements.txt              # Python dependencies
+├── scripts/                      # Helper scripts
+│   ├── get_firefox.sh            # Download and manage Firefox
+└── tests/                        # Test files
+    └── test_google.py            # Example test
 ```
 
 Dependencies
