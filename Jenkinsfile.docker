@@ -21,7 +21,7 @@ pipeline {
       steps {
         // run container with increased shm to avoid Firefox crashes
         // Mount the Jenkins workspace into the container so test-results are accessible
-        sh 'docker run --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME}'
+        sh 'docker run --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} xvfb-run -s "-screen 0 1920x1080x24" pytest -v'
       }
     }
 

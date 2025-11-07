@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/bash
+set -euxo pipefail
 
 # Simple helper to download and unpack the latest Firefox (linux x86_64)
 # into ./firefox. Idempotent: if ./firefox exists it will be replaced unless
