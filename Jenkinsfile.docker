@@ -12,7 +12,7 @@ pipeline {
 
     stage('Build Docker image') {
       steps {
-        sh 'docker build -t ${IMAGE_NAME} -f docker/Dockerfile.test .'
+        sh 'docker build -t ${IMAGE_NAME} -f Dockerfile .'
       }
     }
 
@@ -30,19 +30,6 @@ pipeline {
         junit allowEmptyResults: true, testResults: 'test-results/*.xml'
         archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/**'
         echo 'Tests finished. Results archived (if present).'
-      }
-    }
-    
-    stage('Publish image (optional)') {
-      when {
-        expression { return env.DOCKER_PUSH == 'true' }
-      }
-      steps {
-        withCredentials([string(credentialsId: 'docker-username', variable: 'DOCKER_USERNAME'), string(credentialsId: 'docker-password', variable: 'DOCKER_PASSWORD')]) {
-          sh 'echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin ${DOCKER_REGISTRY ?: "docker.io"}'
-          sh 'docker tag ${IMAGE_NAME} ${DOCKER_REGISTRY ?: "docker.io"}/${DOCKER_USERNAME}/${IMAGE_NAME}'
-          sh 'docker push ${DOCKER_REGISTRY ?: "docker.io"}/${DOCKER_USERNAME}/${IMAGE_NAME}'
-        }
       }
     }
   }
