@@ -11,7 +11,7 @@ pipeline {
     }
     stage('Build Docker image') {
       steps {
-        echo 'Check that jenkins can connect to docker'
+        echo 'Check that jenkins has access to docker'
         sh 'docker ps'
         echo 'Build the docker image'
         sh 'docker build -t ${IMAGE_NAME} -f Dockerfile .'
@@ -20,7 +20,7 @@ pipeline {
     stage('Run tests in container') {
       steps {
         echo 'Run container with increased shm'
-        sh 'docker run --rm --shm-size=1g -it -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv'
+        sh 'docker run --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv'
       }
     }
     stage('Collect results') {
@@ -34,10 +34,8 @@ pipeline {
   }
   post {
     always {
-      archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/**'
-      sleep 5
-      // echo 'Clean up the system, removing the Docker image built'
-      // sh 'docker system prune -a -f'
+      echo 'Clean up the system, removing the Docker image built'
+      sh 'docker rmi ${IMAGE_NAME}'
     }
   }
 }
