@@ -36,14 +36,15 @@ TO BE UPDATED
 ### Project structure
 ```
 pytest_demo/
-├── Dockerfile                    # Docker container builder file for test execution
-├── DockerfileJenkinsContainer    # Jenkins docker image builder
-├── Jenkinsfile.docker            # Jenkins pipeline file
-├── README.md                     # This file
-├── conftest.py                   # Pytest configuration and fixtures
-├── requirements.txt              # Python dependencies
-└── scripts/                      # Helper scripts folder
-    └── docker_installer.sh       # Docker installer helper script
-└── tests/                        # Test files
-    └── test_google.py            # Example test
+├── Dockerfile                     # Docker container builder file for test execution
+├── DockerfileJenkinsContainer     # Jenkins docker image builder
+├── Jenkinsfile.docker             # Jenkins pipeline file
+├── README.md                      # This file
+├── conftest.py                    # Pytest configuration and fixtures
+├── requirements.txt               # Python dependencies
+└── scripts/                       # Helper scripts folder
+    └── docker_installer.sh        # Docker installer helper script
+└── tests/                         # Test files
+    └── test_google.py             # Example test for google.com
+    └── test_automationexercise.py # Example test for automationexercise.com
 ```
