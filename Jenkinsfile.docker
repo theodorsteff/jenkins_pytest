@@ -11,19 +11,21 @@ pipeline {
     }
     stage('Build Docker image') {
       steps {
+        echo 'Check that jenkins can connect to docker'
         sh 'docker ps'
+        echo 'Build the docker image'
         sh 'docker build -t ${IMAGE_NAME} -f Dockerfile .'
       }
     }
     stage('Run tests in container') {
       steps {
-        // run container with increased shm
-        sh 'docker run --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv'
+        echo 'Run container with increased shm'
+        sh 'docker run --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} pytest --html=test-results/report.html --junitxml=test-results/report.xml -v'
       }
     }
     stage('Collect results') {
       steps {
-        // Archive JUnit XML reports and any other artifacts produced in test-results/
+        echo 'Archive JUnit XML reports and any other artifacts produced in test-results/'
         junit allowEmptyResults: true, testResults: 'test-results/*.xml'
         archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/**'
         echo 'Tests finished. Results archived (if present).'
@@ -32,7 +34,9 @@ pipeline {
   }
   post {
     always {
-      // Clean up the system, removing the Docker image built
+      archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/**'
+      sleep 5
+      echo 'Clean up the system, removing the Docker image built'
       sh 'docker system prune -a -f'
     }
   }
