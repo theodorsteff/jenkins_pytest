@@ -36,7 +36,7 @@ pipeline {
   post {
     always {
       // Optional: archive artifacts if present
-      archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/**'
+      sh 'docker system prune -a'
     }
   }
 }
