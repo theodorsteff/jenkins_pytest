@@ -1,75 +1,29 @@
 Jenkins integration of Pytest + Selenium demo
 
-This small demo shows how to use pytest with Selenium (Firefox) to open https://www.google.com and verify the page title.
+This small demo shows how to use pytest with Selenium (Chrome) to open https://www.google.com and verify the page title.
 
-Requirements
-- Python 3.11+ (recommended, 3.8+ supported)
-- Firefox browser (either system Firefox, or download portable Firefox - see below)
-- xvfb package if running headless tests without a display server
-- Docker (if using Kubernetes integration)
+docker build -t pytest_demo:docker -f Dockerfile .
+docker run --rm --shm-size=1g -v ".:/app" --name test -it pytest_demo:docker
 
-Quick start
+### Docker-based Testing
+- Docker and docker-compose
+- No other dependencies needed!
 
-1) Create a virtual environment and activate it
+## Quick Start
 
-```bash
-python -m venv .venv
-source .venv/bin/activate
-```
-
-2) Install dependencies
+### Option 1: Run locally with Docker
 
 ```bash
-pip install -r requirements.txt
+# Build the required docker image (which would automatically run the test suite as well)
+docker build -t pytest_demo:docker -f Dockerfile .
 
-# On some systems you may need xvfb to run headless:
-sudo apt install -y xvfb
+# Run tests
+docker run --rm --shm-size=1g -v ".:/app" --name test -it pytest_demo:docker
 ```
 
-3) Get Firefox
+### Option 2: Run in Jenkins
 
-If your system's Firefox is a snap package or otherwise incompatible, you can use a portable Firefox. The included helper script makes this easy:
-
-```bash
-# Download Firefox to ./firefox (safe, won't overwrite existing):
-./scripts/get_firefox.sh
-
-# Force re-download (replace existing ./firefox):
-./scripts/get_firefox.sh --force
-
-# Skip download if ./firefox exists:
-./scripts/get_firefox.sh --keep
-
-# Override architecture (default: auto-detected):
-./scripts/get_firefox.sh --arch=linux-aarch64  # for ARM64
-./scripts/get_firefox.sh --arch=linux64        # for x86_64
-
-# After download, use the local Firefox:
-export FIREFOX_BINARY="$(pwd)/firefox/firefox"
-```
-
-Note: The helper script is idempotent and safe by default:
-- If `./firefox` doesn't exist: downloads and unpacks Firefox there
-- If `./firefox` exists: refuses to overwrite unless `--force` is passed
-- With `--keep`: skips download if `./firefox` exists (useful in CI)
-```
-
-4) Run tests
-
-```bash
-# Run tests (assumes working display):
-pytest -q
-
-# Or run tests headless under xvfb:
-xvfb-run -s "-screen 0 1920x1080x24" pytest -q
-```
-
-5) Complete command with force firefox re-download would look like this
-
-```bash
-# Force re-download firefox portable executable, run tests headless under xvfb:
-./scripts/get_firefox.sh --force FIREFOX_BINARY="$(pwd)/firefox/firefox" xvfb-run -s "-screen 0 1920x1080x24" /home/thesteff/workspace/pytest_demo/.venv/bin/python -m pytest -q
-```
+TO BE UPDATED
 
 Project Structure
 ```
@@ -80,8 +34,6 @@ pytest_demo/
 ├── README.md                     # This file
 ├── conftest.py                   # Pytest configuration and fixtures
 ├── requirements.txt              # Python dependencies
-├── scripts/                      # Helper scripts
-│   ├── get_firefox.sh            # Download and manage Firefox
 └── tests/                        # Test files
     └── test_google.py            # Example test
 ```
@@ -89,16 +41,26 @@ pytest_demo/
 Dependencies
 The project uses specific versions to ensure compatibility:
 ```
-pytest>=7.4.3
-selenium>=4.15.2
-webdriver-manager>=4.0.1
-kubernetes>=28.1.0  # For kubectl operations
+attrs==25.4.0
+certifi==2025.10.5
+h11==0.16.0
+idna==3.11
+iniconfig==2.3.0
+outcome==1.3.0.post0
+packaging==25.0
+pluggy==1.6.0
+Pygments==2.19.2
+PySocks==1.7.1
+pytest==9.0.0
+selenium==4.38.0
+setuptools==68.1.2
+sniffio==1.3.1
+sortedcontainers==2.4.0
+trio==0.32.0
+trio-websocket==0.12.2
+typing_extensions==4.15.0
+urllib3==2.5.0
+websocket-client==1.9.0
+wheel==0.42.0
+wsproto==1.2.0
 ```
-
-Notes and troubleshooting
-- The project uses `webdriver-manager` to download a matching geckodriver automatically
-- If Firefox fails to start:
-  - Try a portable Firefox (see above "Get Firefox" steps)
-  - Or install Firefox ESR if available: `sudo apt install -y firefox-esr`
-  - If using system Firefox and it's a snap package, you may need to set `FIREFOX_BINARY`
-- To run non-headless (debug), edit `conftest.py` and set `options.headless = False`
