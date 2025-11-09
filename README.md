@@ -33,7 +33,7 @@ docker run --rm --shm-size=1g -v ".:/workspace" ${IMAGE_NAME} pytest --html=test
 
 TO BE UPDATED
 
-Project Structure
+### Project structure
 ```
 pytest_demo/
 ├── Dockerfile                    # Docker container builder file for test execution
