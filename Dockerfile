@@ -27,10 +27,8 @@ RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -
     rm -rf chromedriver-linux64*
 
 # Python setup
-RUN apt-get install -y python3 python3-pip && pip install --break-system-packages selenium pytest
+RUN apt-get install -y python3 python3-pip && pip install --break-system-packages selenium pytest pytest-html
 
-WORKDIR /app
-COPY . /app
-RUN chmod -R 777 /app
-
-CMD ["pytest", "-vvv"]
+WORKDIR /workspace
+COPY . /workspace
+RUN chmod -R 777 /workspace
