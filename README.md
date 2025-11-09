@@ -2,14 +2,18 @@ Jenkins integration of Pytest + Selenium demo
 
 This small demo shows how to use pytest with Selenium (Chrome) to open https://www.google.com and verify the page title.
 
-docker build -t pytest_demo:docker -f Dockerfile .
-docker run --rm --shm-size=1g -v ".:/app" --name test -it pytest_demo:docker
+### Environment setup
 
-### Docker-based Testing
+### Jenkins and Docker-based Testing
+- Locally installed and configured Jenkins
 - Docker and docker-compose
-- No other dependencies needed!
 
-## Quick Start
+Run Docker installer helper script in order to install Docker (if needed), enable Docker service and add the current and jenkins users to docker group (sudo actions required)
+```bash
+cd <repo_folder>
+chmod +x ./scripts/docker_installer.sh
+./scripts/docker_installer.sh
+```
 
 ### Option 1: Run locally with Docker
 
@@ -18,7 +22,7 @@ docker run --rm --shm-size=1g -v ".:/app" --name test -it pytest_demo:docker
 docker build -t pytest_demo:docker -f Dockerfile .
 
 # Run tests
-docker run --rm --shm-size=1g -v ".:/app" --name test -it pytest_demo:docker
+docker run --rm --shm-size=1g -v ".:/workspace" --name test -it pytest_demo:docker pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv
 ```
 
 ### Option 2: Run in Jenkins
@@ -34,6 +38,8 @@ pytest_demo/
 ├── README.md                     # This file
 ├── conftest.py                   # Pytest configuration and fixtures
 ├── requirements.txt              # Python dependencies
+└── scripts/                      # Helper scripts folder
+    └── docker_installer.sh       # Docker installer helper script
 └── tests/                        # Test files
     └── test_google.py            # Example test
 ```

@@ -35,8 +35,8 @@ pipeline {
   }
   post {
     always {
-      // Optional: archive artifacts if present
-      sh 'docker system prune -a'
+      // Clean up the system, removing the Docker image built
+      sh 'docker system prune -a -f'
     }
   }
 }
