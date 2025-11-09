@@ -36,8 +36,8 @@ pipeline {
     always {
       archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/**'
       sleep 5
-      echo 'Clean up the system, removing the Docker image built'
-      sh 'docker system prune -a -f'
+      // echo 'Clean up the system, removing the Docker image built'
+      // sh 'docker system prune -a -f'
     }
   }
 }
