@@ -25,7 +25,7 @@ pipeline {
         // sh 'docker run -it --rm pytest_demo:docker'
         sh 'docker run --network jenkins-net --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} pwd && ls -ltra'
         // sh 'docker run --network jenkins-net --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} xvfb-run -s "-screen 0 1920x1080x24" pytest -v tests/'
-        sh 'docker run --network jenkins-net --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv ./tests'
+        sh 'docker run --network jenkins-net --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv /workspace/tests/'
       }
     }
     stage('Collect results') {
