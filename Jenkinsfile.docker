@@ -15,13 +15,19 @@ pipeline {
         sh 'docker ps'
         echo 'Build the docker image'
         sh 'docker build -t ${IMAGE_NAME} -f Dockerfile .'
-        sh 'docker run --rm --shm-size=1g ${IMAGE_NAME} which python3 && which pip && pip show pytest || echo "pytest not installed?" && echo $PATH'
       }
     }
     stage('Run tests in container') {
       steps {
         echo 'Run container with increased shm'
-        sh 'docker run --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv'
+        sh 'docker run --rm -it --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} bash'
+        sh '''
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+            pytest --version
+        '''
+        // sh 'docker run --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv'
       }
     }
     stage('Collect results') {
