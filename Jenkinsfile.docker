@@ -15,6 +15,7 @@ pipeline {
         sh 'docker ps'
         echo 'Build the docker image'
         sh 'docker build -t ${IMAGE_NAME} -f Dockerfile .'
+        sh 'docker run --rm --shm-size=1g ${IMAGE_NAME} which python3 && which pip && pip show pytest || echo "pytest not installed?" && echo $PATH'
       }
     }
     stage('Run tests in container') {
