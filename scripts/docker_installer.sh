@@ -22,6 +22,6 @@ sudo systemctl enable --now docker
 echo "Adding $USER to docker group (may require logout/login)..."
 sudo usermod -aG docker "$USER" || true
 
-Give jenkins user access to docker
+echo "Give jenkins user access to docker"
 sudo usermod -aG docker jenkins || true
 sudo systemctl restart jenkins
