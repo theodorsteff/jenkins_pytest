@@ -20,7 +20,7 @@ pipeline {
     stage('Run tests in container') {
       steps {
         echo 'Run container with increased shm'
-        sh 'Current path and folder content'
+        echo 'Current path and folder content'
         sh 'pwd && ls -ltra'
         // sh 'docker run --rm --shm-size=1g -v "${WORKSPACE}:/workspace" ${IMAGE_NAME} pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv'
       }
