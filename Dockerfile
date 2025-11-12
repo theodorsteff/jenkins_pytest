@@ -28,7 +28,7 @@ RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -
     rm -rf chromedriver-linux64*
 
 # Install pytest and plugins
-RUN pip install --no-cache-dir pytest pytest-html pytest-metadata selenium
+RUN pip install --no-cache-dir --break-system-packages pytest pytest-html pytest-metadata selenium
 
 # Prepare workspace
 WORKDIR /workspace
