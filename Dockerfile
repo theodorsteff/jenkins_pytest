@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # Install Google Chrome
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+    apt-get update && apt-get install -y ./google-chrome-stable_current_amd64.deb && \
     rm google-chrome-stable_current_amd64.deb
 
 # Install ChromeDriver matching Chrome version
@@ -27,8 +27,8 @@ RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -
     chmod +x /usr/local/bin/chromedriver && \
     rm -rf chromedriver-linux64*
 
-# Python setup
-RUN pip install --break-system-packages --no-cache-dir pytest pytest-html pytest-metadata selenium
+# Install pytest and plugins
+RUN pip install --no-cache-dir pytest pytest-html pytest-metadata selenium
 
 # Prepare workspace
 WORKDIR /workspace
