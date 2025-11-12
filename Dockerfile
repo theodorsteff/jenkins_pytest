@@ -11,11 +11,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libnspr4 libnss3 libpango-1.0-0 libpangocairo-1.0-0 libstdc++6 \
     libx11-6 libx11-xcb1 libxcb1 libxcomposite1 libxcursor1 libxdamage1 \
     libxext6 libxfixes3 libxi6 libxrandr2 libxrender1 libxss1 libxtst6 libgbm1 \
-    && rm -rf /var/lib/apt/lists/*
+    python3 python3-pip && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install Google Chrome
 RUN wget -q https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
-    apt-get update && apt-get install -y ./google-chrome-stable_current_amd64.deb && \
+    apt-get install -y ./google-chrome-stable_current_amd64.deb && \
     rm google-chrome-stable_current_amd64.deb
 
 # Install ChromeDriver matching Chrome version
@@ -27,8 +28,11 @@ RUN CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+' | head -
     rm -rf chromedriver-linux64*
 
 # Python setup
-RUN apt-get install -y python3 python3-pip && pip install --break-system-packages --no-cache-dir pytest pytest-html pytest-metadata selenium
+RUN pip install --break-system-packages --no-cache-dir pytest pytest-html pytest-metadata selenium
 
+# Prepare workspace
 WORKDIR /workspace
-COPY . /workspace
-RUN chmod -R 777 /workspace
+RUN mkdir -p /workspace && chmod -R 777 /workspace
+
+ENTRYPOINT ["pytest"]
+
