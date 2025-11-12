@@ -33,6 +33,3 @@ RUN pip install --no-cache-dir --break-system-packages pytest pytest-html pytest
 # Prepare workspace
 WORKDIR /workspace
 RUN mkdir -p /workspace && chmod -R 777 /workspace
-
-ENTRYPOINT ["pytest"]
-
