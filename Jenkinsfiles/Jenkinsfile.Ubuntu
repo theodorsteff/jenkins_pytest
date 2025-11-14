@@ -1,7 +1,7 @@
 pipeline {
   agent any
   environment {
-    IMAGE_NAME = "pytest_demo:docker"
+    IMAGE_NAME = "pytest:ubuntu"
   }
   stages {
     stage('Checkout') {
