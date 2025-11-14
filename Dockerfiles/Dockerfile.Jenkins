@@ -8,11 +8,11 @@ ENV JAVA_OPTS=-Djenkins.install.runSetupWizard=false
 ENV JENKINS_OPTS=--httpPort=8081
 
 # Copy plugin list and install
-COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
+COPY Dockerfiles/plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
 
 # Copy Jenkins Configuration as Code (JCasC)
-COPY casc.yaml /usr/share/jenkins/ref/casc.yaml
+COPY Dockerfiles/casc.yaml /usr/share/jenkins/ref/casc.yaml
 ENV CASC_JENKINS_CONFIG=/usr/share/jenkins/ref/casc.yaml
 
 # Install dependencies
@@ -46,8 +46,3 @@ RUN pip install --no-cache-dir --break-system-packages pytest pytest-html pytest
 # Prepare workspace
 WORKDIR /workspace
 RUN mkdir -p /workspace && chmod -R 777 /workspace
-
-# Run entrypoint as root
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD []
-

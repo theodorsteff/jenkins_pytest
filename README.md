@@ -4,11 +4,11 @@ This small demo shows how to Integrate pytest with Selenium (Chrome) in Jenkins
 
 ### Environment setup
 
-### Linux Ubuntu
+## Linux Ubuntu
 
 Installed Ubuntu 24.04.3 LTS distribution of Linux
 
-### Docker installation
+## Docker installation
 
 Run Docker installer helper script in order to install Docker (if needed), enable Docker service and add the current and jenkins users to docker group (sudo actions required)
 
@@ -18,7 +18,7 @@ chmod +x ./scripts/docker_installer.sh
 ./scripts/docker_installer.sh
 ```
 
-### Jenkins pipeline setup
+## Jenkins pipeline setup
 
 In order to configure the pipeline, typical steps are:
 
@@ -28,19 +28,21 @@ In order to configure the pipeline, typical steps are:
 4. Coose `pipeline` (requires pipeline plugin to be preinstalled)
 5. Click `OK`
 6. Scroll down to "Pipeline" section -> `Pipeline script from SCM` and configure the job {
-    `SCM`: Git
-    `Repository URL`: <repo_url>
-    `Credentials`: none
-    `Branch Specifier (blank for 'any')`: <branch_name>
-    `Script Path`: <jenkins_script_path_inside_repo>
+    `SCM`: Git  
+    `Repository URL`: **_Address from where repo will be fetched_**  
+    `Credentials`: none  
+    `Branch Specifier (blank for 'any')`: **_Name of the repo branch to checkout_**  
+    `Script Path`: **_Jenkins script path inside repo_**  
 }
 7. Click `Save`
 
 ### Option 1: Run locally with Docker
 
 ```bash
+cd <repo_folder>
+
 # Build the required docker image
-IMAGE_NAME = pytest:ubuntu
+IMAGE_NAME="pytest:ubuntu"
 docker build -t ${IMAGE_NAME} -f Dockerfiles/Dockerfile.Ubuntu .
 
 # Run tests
@@ -53,7 +55,7 @@ sudo chown -R $(id -u):$(id -g) test-results/
 
 ### Option 2: Run with pre-installed Jenkins
 
-Required Jenkins plugins:
+_Required Jenkins plugins:_
 ```
 git
 workflow-aggregator
@@ -65,40 +67,42 @@ pipeline-stage-view
 ```
 
 1. Access & login to Jenkins
-2. Jenkins pipeline setup {
-    `SCM`: Git
-    `Repository URL`: https://github.com/theodorsteff/jenkins_pytest.git
-    `Credentials`: none
-    `Branch Specifier (blank for 'any')`: ./main
-    `Script Path`: Jenkinsfiles/Jenkinsfile.Ubuntu
+2. Jenkins pipeline setup {  
+    `SCM`: Git  
+    `Repository URL`: https://github.com/theodorsteff/jenkins_pytest.git  
+    `Credentials`: none  
+    `Branch Specifier (blank for 'any')`: ./main  
+    `Script Path`: Jenkinsfiles/Jenkinsfile.Ubuntu  
 }
 3. Run the pipeline
 
 ### Option 3: Run in containerized Jenkins
 
-Required Jenkins plugins are automatically installed when building the docker image.
+_Required Jenkins plugins are automatically installed when building the docker image._
 
 ```bash
+cd <repo_folder>
+
 # Build the required docker image
-IMAGE_NAME = jenkins:docker
+IMAGE_NAME="jenkins:docker"
 docker build -t ${IMAGE_NAME} -f Dockerfiles/Dockerfile.Jenkins .
 
 # Run docker container for Jenkins
 docker run -d \
   -p 8081:8081 -p 50000:50000 \
   --name my-jenkins \
-  my-jenkins:latest
+  ${IMAGE_NAME}
 
 # Jenkins should be up and running in about 30-60 seconds
 ```
 
 1. Access & login to Jenkins (http://localhost:8081, Username: admin, Password: admin)
-2. Jenkins pipeline setup {
-    `SCM`: Git
-    `Repository URL`: https://github.com/theodorsteff/jenkins_pytest.git
-    `Credentials`: none
-    `Branch Specifier (blank for 'any')`: ./main
-    `Script Path`: Jenkinsfiles/Jenkinsfile.Ubuntu
+2. Jenkins pipeline setup {  
+    `SCM`: Git  
+    `Repository URL`: https://github.com/theodorsteff/jenkins_pytest.git  
+    `Credentials`: none  
+    `Branch Specifier (blank for 'any')`: ./main  
+    `Script Path`: Jenkinsfiles/Jenkinsfile.Jenkins  
 }
 3. Run the pipeline
 
@@ -114,7 +118,7 @@ docker run -d \
 └── Jenkinsfiles/                  # Jenkins pipeline scripts folder
     └── Jenkinsfile.Jenkins        # Jenkins pipeline scripts to run on containerized Jenkins
     └── Jenkinsfile.Ubuntu         # Jenkins pipeline scripts to run on pre-installed Jenkins
-├── README.md                      # This file
+├── README.md                      -> This file
 ├── requirements.txt               # Python dependencies
 └── scripts/                       # Helper scripts folder
     └── docker_installer.sh        # Docker installer helper script
@@ -122,4 +126,3 @@ docker run -d \
     └── test_google.py             # Example test for google.com
     └── test_automationexercise.py # Example test for automationexercise.com
 ```
-
