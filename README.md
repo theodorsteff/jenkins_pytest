@@ -5,16 +5,36 @@ This small demo shows how to Integrate pytest with Selenium (Chrome) in Jenkins
 ### Environment setup
 
 ### Linux Ubuntu
-- Installed Ubuntu 24.04.3 LTS distribution of Linux
+
+Installed Ubuntu 24.04.3 LTS distribution of Linux
 
 ### Docker installation
 
 Run Docker installer helper script in order to install Docker (if needed), enable Docker service and add the current and jenkins users to docker group (sudo actions required)
+
 ```bash
 cd <repo_folder>
 chmod +x ./scripts/docker_installer.sh
 ./scripts/docker_installer.sh
 ```
+
+### Jenkins pipeline setup
+
+In order to configure the pipeline, typical steps are:
+
+1. Go to Jenkins dashboard
+2. Click on `New Item`
+3. Enter an item name
+4. Coose `pipeline` (requires pipeline plugin to be preinstalled)
+5. Click `OK`
+6. Scroll down to "Pipeline" section -> `Pipeline script from SCM` and configure the job {
+    `SCM`: Git
+    `Repository URL`: <repo_url>
+    `Credentials`: none
+    `Branch Specifier (blank for 'any')`: <branch_name>
+    `Script Path`: <jenkins_script_path_inside_repo>
+}
+7. Click `Save`
 
 ### Option 1: Run locally with Docker
 
@@ -31,23 +51,7 @@ docker run --rm --shm-size=1g -v ".:/workspace" ${IMAGE_NAME} pytest --html=test
 sudo chown -R $(id -u):$(id -g) test-results/
 ```
 
-### Jenkins pipeline setup
-
-1. Click on `Jenkins` logo to go to the dashboard
-2. Click on `New Item`
-3. Enter an item name
-4. Coose `pipeline` (requires pipeline plugin to be preinstalled)
-5. Click `OK`
-6. Scroll down to "Pipeline" section -> `Pipeline script from SCM` and configure the job {
-    `SCM`: Git
-    `Repository URL`: <repo_url>
-    `Credentials`: none
-    `Branch Specifier (blank for 'any')`: <branch_name>
-    `Script Path`: <jenkins_script_path_inside_repo>
-}
-7. Click `Save`
-
-### Option 2: Run in pre-installed Jenkins
+### Option 2: Run with pre-installed Jenkins
 
 Required Jenkins plugins:
 ```
