@@ -1,0 +1,8 @@
+# plugins.txt
+git
+workflow-aggregator
+configuration-as-code
+blueocean
+docker-workflow
+credentials-binding
+pipeline-stage-view

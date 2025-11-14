@@ -1,0 +1,20 @@
+jenkins:
+  systemMessage: "🚀 Jenkins automated setup via Docker & JCasC"
+  numExecutors: 2
+  mode: NORMAL
+  labelString: "master"
+
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin"
+
+  authorizationStrategy:
+    loggedInUsersCanDoAnything:
+      allowAnonymousRead: false
+
+unclassified:
+  location:
+    url: http://localhost:8081/
