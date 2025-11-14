@@ -61,7 +61,7 @@ git
 workflow-aggregator
 configuration-as-code
 blueocean
-docker-workflow
+dark-theme
 credentials-binding
 pipeline-stage-view
 ```
