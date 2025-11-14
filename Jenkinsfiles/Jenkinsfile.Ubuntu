@@ -14,7 +14,7 @@ pipeline {
         echo 'Check that jenkins has access to docker'
         sh 'docker ps'
         echo 'Build the docker image'
-        sh 'docker build -t ${IMAGE_NAME} -f Dockerfile .'
+        sh 'docker build -t ${IMAGE_NAME} -f Dockerfiles/Dockerfile.Ubuntu .'
       }
     }
     stage('Run tests in container') {
