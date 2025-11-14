@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 firefox/
 draft_notes.txt
+test-results/

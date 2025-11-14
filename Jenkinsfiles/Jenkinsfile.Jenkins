@@ -6,11 +6,8 @@ pipeline {
         checkout scm
       }
     }
-    stage('Run tests in container') {
+    stage('Run tests') {
       steps {
-        echo 'Run container with increased shm'
-        echo 'Current path and folder content'
-        sh 'pwd && ls -ltra'
         sh 'pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv tests/'
       }
     }
