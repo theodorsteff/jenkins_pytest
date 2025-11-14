@@ -1,0 +1,26 @@
+pipeline {
+  agent any
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+    stage('Run tests in container') {
+      steps {
+        echo 'Run container with increased shm'
+        echo 'Current path and folder content'
+        sh 'pwd && ls -ltra'
+        sh 'pytest --html=test-results/report.html --junitxml=test-results/report.xml -vvv tests/'
+      }
+    }
+    stage('Collect results') {
+      steps {
+        echo 'Archive JUnit XML reports and any other artifacts produced in test-results/'
+        junit allowEmptyResults: true, testResults: 'test-results/*.xml'
+        archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/**'
+        echo 'Tests finished. Results archived (if present).'
+      }
+    }
+  }
+}
