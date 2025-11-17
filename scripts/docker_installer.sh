@@ -22,6 +22,12 @@ sudo systemctl enable --now docker
 echo "Adding $USER to docker group (may require logout/login)..."
 sudo usermod -aG docker "$USER" || true
 
-echo "Give jenkins user access to docker"
-sudo usermod -aG docker jenkins || true
-sudo systemctl restart jenkins
+if systemctl status Jenkins >/dev/null 2>&1; then
+  echo "Give Jenkins user access to docker"
+  sudo usermod -aG docker jenkins || true
+  echo "Restarting Jenkins"
+  sudo systemctl restart jenkins
+else
+  echo "Jenkins service not installed"
+  echo "In case of a future installation of Jenkins, remember to give Jenkins user access to docker"
+fi
